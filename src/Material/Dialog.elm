@@ -124,6 +124,7 @@ type Config msg
         , additionalAttributes : List (Html.Attribute msg)
         , onClose : Maybe msg
         , scrimCloses : Bool
+        , escapeCloses : Bool
         }
 
 
@@ -137,6 +138,7 @@ config =
         , additionalAttributes = []
         , onClose = Nothing
         , scrimCloses = True
+        , escapeCloses = True
         }
 
 
@@ -156,6 +158,17 @@ If set to `True`, clicking on the dialog's scrim results in the dialog's
 setScrimCloses : Bool -> Config msg -> Config msg
 setScrimCloses scrimCloses (Config config_) =
     Config { config_ | scrimCloses = scrimCloses }
+
+
+{-| Specify whether pressing Escape should close the dialog
+
+If set to `True`, pressing Escape within results in the dialog's `setOnClose`
+mege. Defaults to `True`.
+
+-}
+setEscapeCloses : Bool -> Config msg -> Config msg
+setEscapeCloses escapeCloses (Config config_) =
+    Config { config_ | escapeCloses = escapeCloses }
 
 
 {-| Specify additional attributes
@@ -295,6 +308,21 @@ scrimClickActionProp (Config { scrimCloses }) =
         (Html.Attributes.property "scrimClickAction"
             (Encode.string
                 (if scrimCloses then
+                    "close"
+
+                 else
+                    ""
+                )
+            )
+        )
+
+
+escapeKeyActionProp : Config msg -> Maybe (Html.Attribute msg)
+escapeKeyActionProp (Config { escapeCloses }) =
+    Just
+        (Html.Attributes.property "escapeKeyAction"
+            (Encode.string
+                (if escapeCloses then
                     "close"
 
                  else
