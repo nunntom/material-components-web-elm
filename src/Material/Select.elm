@@ -570,7 +570,7 @@ dropdownIconElt =
                 [ Svg.Attributes.class "mdc-select__dropdown-icon-active"
                 , Svg.Attributes.stroke "none"
                 , Svg.Attributes.fillRule "evenodd"
-                , Svg.Attributes.points "7 10 12 15 17 15"
+                , Svg.Attributes.points "7 15 12 10 17 15"
                 ]
                 []
             ]
