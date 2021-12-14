@@ -21,6 +21,7 @@ module Material.TextField exposing
     , setSuffix
     , setEndAligned
     , setAttributes
+    , setName
     , filled
     , outlined
     )
@@ -104,6 +105,7 @@ module Material.TextField exposing
 @docs setSuffix
 @docs setEndAligned
 @docs setAttributes
+@docs setName
 
 
 # Filled Text Field
@@ -288,6 +290,7 @@ type Config msg
         , additionalAttributes : List (Html.Attribute msg)
         , onInput : Maybe (String -> msg)
         , onChange : Maybe (String -> msg)
+        , name : Maybe String
         }
 
 
@@ -318,6 +321,7 @@ config =
         , additionalAttributes = []
         , onInput = Nothing
         , onChange = Nothing
+        , name = Nothing
         }
 
 
@@ -471,6 +475,13 @@ field
 setOnChange : (String -> msg) -> Config msg -> Config msg
 setOnChange onChange (Config config_) =
     Config { config_ | onChange = Just onChange }
+
+
+{-| Specify a text fields name
+-}
+setName : Maybe String -> Config msg -> Config msg
+setName name (Config config_) =
+    Config { config_ | name = name }
 
 
 {-| Filled text field view function
@@ -838,6 +849,7 @@ inputElt config_ =
             , changeHandler config_
             , minLengthAttr config_
             , maxLengthAttr config_
+            , nameAttr config_
             ]
         )
         []
@@ -868,6 +880,11 @@ ariaLabelAttr (Config { fullwidth, placeholder, label }) =
 
     else
         Nothing
+
+
+nameAttr : Config msg -> Maybe (Html.Attribute msg)
+nameAttr (Config { name }) =
+    Maybe.map Html.Attributes.name name
 
 
 disabledProp : Config msg -> Maybe (Html.Attribute msg)
